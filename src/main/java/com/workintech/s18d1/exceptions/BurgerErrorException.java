@@ -18,7 +18,7 @@ public class BurgerErrorException {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<BurgerErrorResponse> handleGeneralException(Exception ex) {
-        BurgerErrorResponse response = new BurgerErrorResponse("An unexpected error occurred");
+        BurgerErrorResponse response = new BurgerErrorResponse("Unexpected error");
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

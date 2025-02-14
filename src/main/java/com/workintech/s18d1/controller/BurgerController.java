@@ -1,6 +1,7 @@
 package com.workintech.s18d1.controller;
 
-import com.workintech.s18d1.dao.BurgerDaoImpl;
+
+import com.workintech.s18d1.dao.BurgerDao;
 import com.workintech.s18d1.entity.BreadType;
 import com.workintech.s18d1.entity.Burger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,63 +10,58 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/workintech/burgers")
+@RequestMapping("/burger")
 public class BurgerController {
 
-    BurgerDaoImpl burgerDaoImpl;
+    private final BurgerDao burgerDao;
 
     @Autowired
-    public BurgerController(BurgerDaoImpl burgerDaoImpl) {
-        this.burgerDaoImpl = burgerDaoImpl;
+    public BurgerController(BurgerDao burgerDao) {
+        this.burgerDao = burgerDao;
     }
 
     @GetMapping
     public List<Burger> getAllBurgers() {
-        return burgerDaoImpl.findAll();
+        return burgerDao.findAll();
     }
 
     @GetMapping("/{id}")
     public Burger getBurgerById(@PathVariable Long id) {
-        return burgerDaoImpl.findById(id);
+        return burgerDao.findById(id);
     }
 
     @PostMapping
     public Burger addBurger(@RequestBody Burger burger) {
-        return burgerDaoImpl.save(burger);
+        return burgerDao.save(burger);
     }
 
-    @PutMapping("/{id}")
-    public Burger updateBurger(@PathVariable Long id, @RequestBody Burger burger) {
-        Burger existingBurger = burgerDaoImpl.findById(id);
-        if (existingBurger != null) {
-            burger.setId(id); // ID'yi koruyarak güncelleme yap
-            burgerDaoImpl.update(burger);
+    @PutMapping
+    public Burger updateBurger(@RequestBody Burger burger) {
+            burgerDao.update(burger);
             return burger;
-        }
-        return null; // Burger bulunamazsa null döner
     }
 
     @DeleteMapping("/{id}")
     public void deleteBurger(@PathVariable Long id) {
-        Burger burger = burgerDaoImpl.findById(id);
+        Burger burger = burgerDao.findById(id);
         if (burger != null) {
-            burgerDaoImpl.remove(id);
+            burgerDao.remove(id);
         }
     }
 
-    @GetMapping("/findByPrice")
-    public List<Burger> getBurgersByPrice(@RequestParam Integer price) {
-        return burgerDaoImpl.findByPrice(price);
+    @GetMapping("/price/{price}")
+    public List<Burger> getBurgersByPrice(@PathVariable("price") Integer price) {
+        return burgerDao.findByPrice(price);
     }
 
-    @GetMapping("/findByBreadType")
-    public List<Burger> getBurgersByBreadType(@RequestParam String breadType) {
-        return burgerDaoImpl.findByBreadType(BreadType.valueOf(breadType));
+    @GetMapping("/breadType/{breadType}")
+    public List<Burger> getBurgersByBreadType(@PathVariable("breadType") String breadType) {
+        return burgerDao.findByBreadType(BreadType.valueOf(breadType));
     }
 
 
-    @GetMapping("/findByContent")
-    public List<Burger> getBurgersByContent(@RequestParam String content) {
-        return burgerDaoImpl.findByContent(content);
+    @GetMapping("/content/{content}")
+    public List<Burger> getBurgersByContent(@PathVariable("content") String content) {
+        return burgerDao.findByContent(content);
     }
 }

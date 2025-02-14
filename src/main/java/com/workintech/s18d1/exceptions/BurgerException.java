@@ -1,7 +1,12 @@
 package com.workintech.s18d1.exceptions;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
+
+@Getter
+@Setter
 public class BurgerException extends RuntimeException {
     private HttpStatus status;
 
@@ -14,7 +19,4 @@ public class BurgerException extends RuntimeException {
         return status;
     }
 
-    public void setStatus(HttpStatus status) {
-        this.status = status;
-    }
 }
